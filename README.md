@@ -276,3 +276,38 @@ rw-test: PASS
 required CXL, NVDIMM, and DAX modules, creates `region0` when needed, creates a
 devdax namespace when needed, and reports the resource file backing
 `/dev/dax0.0`.
+
+## Ubuntu 24.04 Rootfs
+
+For the QEMU path, an Ubuntu 24.04 rootfs is often more convenient than the
+older prebuilt image when validating CXL support. In this repository it is the
+easier base for guest-side CXL simulation because the required user-space stack
+for CXL region and devdax management can be installed directly from the distro,
+including `ndctl`, `daxctl`, and the `cxl` toolchain used by the tests.
+
+The repository provides a helper script:
+
+```sh
+cd linux-6.9.5
+sudo ./make_ubuntu2404_rootfs.sh
+```
+
+The script uses `debootstrap` to create an Ubuntu 24.04 (`noble`) rootfs in
+`linux-6.9.5/rootfs_debian_x86_64`, installs the packages needed for serial
+login and CXL testing, enables `ttyS0` root autologin, and, when a kernel image
+is already available, invokes `./run.sh build_rootfs` to pack the rootfs into
+`linux-6.9.5/ubuntu.ext4`.
+
+Useful environment overrides:
+
+```sh
+UBUNTU_MIRROR=http://archive.ubuntu.com/ubuntu ROOT_PASSWORD=root FORCE_REBUILD_ROOTFS=1 FORCE_REBUILD_IMAGE=1 sudo ./make_ubuntu2404_rootfs.sh
+```
+
+After the image is created, continue with the normal QEMU flow:
+
+```sh
+cd linux-6.9.5
+sudo ./run.sh update_rootfs
+./run.sh run
+```
