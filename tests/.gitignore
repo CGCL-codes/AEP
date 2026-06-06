@@ -1,0 +1,5 @@
+# Shared test build outputs
+pv_loader
+*.o
+*.a
+*.log

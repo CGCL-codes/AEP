@@ -1,0 +1,10 @@
+# Objects
+*.o
+
+# Loader binaries and generated outputs
+*.ext4
+p3
+pv_loader
+result
+fdlhelper
+foreign_pv_funcs

@@ -1,0 +1,13 @@
+# Objects and archives
+*.o
+*.direct.o
+*.a
+
+# Local allocator binaries
+aep-malloc
+
+# Generated images/logs and scratch files
+*.ext4
+*.txt
+*.tmp
+*.log
